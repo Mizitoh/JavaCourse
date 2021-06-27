@@ -10,6 +10,7 @@ public class ExerciciosPrimos {
 		Scanner entrada = new Scanner(System.in);
 		
 		int numero = entrada.nextInt();
+		
 		double primo;
 		int contador = 0;
 		
