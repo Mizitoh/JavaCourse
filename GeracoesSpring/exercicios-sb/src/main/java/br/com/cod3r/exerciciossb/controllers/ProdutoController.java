@@ -1,9 +1,15 @@
 package br.com.cod3r.exerciciossb.controllers;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 //import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,9 +35,51 @@ public class ProdutoController {
 
 	@PostMapping
 	public @ResponseBody Produto novoProduto(@Valid Produto produto) {
-		//@valid para validar as anotações adicionadas em entidades
+		// @valid para validar as anotações adicionadas em entidades
 		produtoRepository.save(produto);
 		return produto;
+	}
+
+	@GetMapping
+	public Iterable<Produto> obterProdutos() {
+		return produtoRepository.findAll();
+		// Iterable é o tipo do metodo findall, reutilizamos.
+		// assim como Iquerable deve ser o tipo das funções do professor de asp
+	}
+
+	@GetMapping(path = "/{id}")
+	public Optional<Produto> obterProdutosByID(@PathVariable int id) {
+		return produtoRepository.findById(id);
+		// Iterable é o tipo do metodo findall, reutilizamos.
+		// assim como Iquerable deve ser o tipo das funções do professor de asp
+	}
+
+	// alterar objeto inteiro
+	@PutMapping
+	public Produto alterarProduto(@Valid Produto produto) {
+		produtoRepository.save(produto);
+		return produto;
+	}
+
+	/*
+	 * metodo generico que abriga tanto o post quanto o put é sucesso!
+	 * 
+	 * @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
+	 * public @ResponseBody Produto salvarProduto(@Valid Produto produto) {
+	 * produtoRepository.save(produto); return produto; }
+	 * 
+	 */
+	
+	@DeleteMapping(path = "/{id}")
+	public void excluirProduto(@PathVariable int id) {
+		produtoRepository.deleteById(id);
+	}
+	
+	/*consulta paginada*/
+	
+	@GetMapping(path = "/pagina/{numeroPagina}")
+	public Iterable<Produto> obterProdutoPorPagina(@PathVariable int numeroPagina){
+		return produtoRepository.findAll();
 	}
 
 }
